@@ -3,6 +3,7 @@
 	import Answer from "./Answer.svelte";
 	import Points from "./Points.svelte";
 	let start = false;
+	let end = false;
 	let quiz = [];
 	let amount;
 	let difficulty;
@@ -62,13 +63,7 @@
 		}
 		setTimeout(function() {
 			if (quizIndex+1 >= quiz.length) {
-				console.log("Quiz Over");
-				setTimeout(function() {
-					color = "black";
-					quiz[quizIndex].question = 'Game Over!, You got ' + points + ' points!';
-					quizIndex = 0;
-					points = 0;
-				}, 2000)
+				end = true;
 			}
 			else{
 				color = "blue";
@@ -96,7 +91,7 @@
         text-align: center;
 	}
 	/* Place in centre of page */
-	.AppBeforeStart {
+	.NonQuizMode {
 		position: fixed;
 		top: 50%;
 		left: 50%;
@@ -104,7 +99,7 @@
 	}
 </style>
 
-{#if start === true}
+{#if start === true && end === false}
 <div class="App">
 	<Points points={points}/>
 	<Question questionText={quiz[quizIndex].question} color={color}/>
@@ -113,8 +108,8 @@
 		<Answer answerText={quiz[quizIndex].answers[1]} checkAnswerHandler={checkAnswerHandler}/>
 	</div>
 </div>
-{:else}
-<div class="AppBeforeStart">
+{:else if start === false && end === false}
+<div class="NonQuizMode">
 	<h1>Quizz...</h1>
 	<form  on:submit|preventDefault={onSubmit}>
 		<!-- Drop Down category -->
@@ -150,8 +145,9 @@
 			<option value="medium">Medium</option>
 			<option value="hard">Hard</option>
 		</select>
-		<!-- Number of Questions (Options 5, 10, 20) -->
+		<!-- Number of Questions (Options 1, 5, 10, 20) -->
 		<select name="count">
+			<option value="1">1</option>
 			<option value="5">5</option>
 			<option value="10">10</option>
 			<option value="20">20</option>
@@ -159,5 +155,10 @@
 		<!-- Submit Button -->
 		<button type="submit">Start</button>
 	</form>
+</div>
+{:else if end === true}
+<div class="NonQuizMode">
+	<h1>Game Over!</h1>
+	<p style="text-align:center">You got {points} points!</p>
 </div>
 {/if}
