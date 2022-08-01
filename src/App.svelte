@@ -8,6 +8,10 @@
 	let amount;
 	let difficulty;
 	let category;
+	async function onClickReload(e) {
+		// Reload Page
+		window.location.reload();
+	}
 	async function onSubmit(e) {
 		const formData = new FormData(e.target);
 		const data = {};
@@ -96,6 +100,14 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+		align-items: center;
+	}
+	/* Centre */
+	.subButton {
+		flex: auto;
+		position: fixed;
+		top: 100%;
+		left: 25%;
 	}
 </style>
 
@@ -160,5 +172,10 @@
 <div class="NonQuizMode">
 	<h1>Game Over!</h1>
 	<p style="text-align:center">You got {points} points!</p>
+	<!-- Centre Button that reloads page -->
+	<div class="subButton">
+		<button on:click={onClickReload}>Play Again</button>
+	</div>
+	
 </div>
 {/if}
